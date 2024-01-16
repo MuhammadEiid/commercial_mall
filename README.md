@@ -12,7 +12,7 @@
 - [x] Mall reviews and ratings by Users.
 - [x] User can View, Like, Dislike, Save, and Unsave Blog.
 - [x] User get all his liked blogs and saved blogs
-- [x] Make an appointment with a specific doctor including sending mail to the User that his appointment is approved.
+- [x] Make an appointment with a the company sales engineers to talk about the units including sending mail to the User that his appointment is approved.
 - [x] Forget your password including sending mail
 - [x] Update your password and profile
 - [x] Upload Profile Picture, and gallery images, videos CRUD
@@ -33,6 +33,7 @@
 - [x] CRUD Operations on Images, Videos ( Gallery ), Profile Pictures
 - [x] Used File System to remove the old images and deleted images from database
 - [x] Logout
+
 
 ## Technologies 🚀
 
