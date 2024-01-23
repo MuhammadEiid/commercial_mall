@@ -66,13 +66,12 @@ const addModel = catchError(async (req, res, next) => {
   };
 
   const mall = await mallModel.create({
-    model: [newModel],
+    model: newModel,
   });
 
   res.status(201).json(mall.model);
 });
 
-// ---------------------------------------------------------------- //
 // ----------------------- Get All Models Without Images ------------------------- //
 
 const getAllWithoutImages = catchError(async (req, res, next) => {
@@ -85,6 +84,7 @@ const getAllWithoutImages = catchError(async (req, res, next) => {
   res.status(200).json({ mall });
 });
 
+// ---------------------------------------------------------------- //
 // ----------------------- Get All Models ------------------------- //
 
 const getAllModels = handler.getAll(mallModel, "Models");
@@ -116,42 +116,42 @@ const updateModel = catchError(async (req, res, next) => {
     if (mainType && !validMainTypes.includes(mainType)) {
       return next(new AppError("Invalid Main Type value", 400));
     }
-    mall.model[0].mainType = mainType;
+    mall.model.mainType = mainType;
   }
 
   // Update specific fields
   const updateSecondaryType = (key) => {
-    mall.model[0].secondaryType[key] =
+    mall.model.secondaryType[key] =
       secondaryType?.[key] !== undefined
         ? secondaryType[key]
-        : mall.model[0].secondaryType[key];
+        : mall.model.secondaryType[key];
   };
 
   ["ar", "en"].forEach(updateSecondaryType);
 
   const updateDescription = (key) => {
-    mall.model[0].details.description[key] =
+    mall.model.details.description[key] =
       description?.[key] !== undefined
         ? description[key]
-        : mall.model[0].details.description[key];
+        : mall.model.details.description[key];
   };
 
   ["ar", "en"].forEach(updateDescription);
 
   ["length", "width", "height", "squareMeter"].forEach((field) => {
     if (req.body[field] !== undefined) {
-      mall.model[0].details[field] = req.body[field];
+      mall.model.details[field] = req.body[field];
     }
   });
 
   // Delete old images if new images are provided
   if (req.files && req.files.images) {
     // Delete old images
-    const oldImages = mall.model[0].details.images;
+    const oldImages = mall.model.details.images;
     for (const oldImage of oldImages) {
       // Check if the image exists in the database
       const imageExistsInDatabase =
-        mall.model[0].details.images.includes(oldImage);
+        mall.model.details.images.includes(oldImage);
       if (imageExistsInDatabase) {
         const filename = oldImage.replace(
           process.env.BaseURL + "mall/models/",
@@ -169,9 +169,7 @@ const updateModel = catchError(async (req, res, next) => {
     }
 
     // Update with new images
-    mall.model[0].details.images = req.files.images.map(
-      (file) => file.filename
-    );
+    mall.model.details.images = req.files.images.map((file) => file.filename);
   }
 
   // Check if there is any updated data
@@ -206,7 +204,7 @@ const deleteModel = catchError(async (req, res, next) => {
 
   // Handle file deletion for images
   const folderName = "mall/models"; // Replace with the actual folderName
-  const images = deletedModel.model[0].details.images;
+  const images = deletedModel.model.details.images;
 
   if (images && images.length > 0) {
     images.forEach(async (image) => {

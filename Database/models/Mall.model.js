@@ -2,7 +2,7 @@ import mongoose, { Schema, model } from "mongoose";
 
 const mallSchema = new Schema(
   {
-    model: [
+    model: 
       {
         mainType: {
           type: String,
@@ -30,15 +30,15 @@ const mallSchema = new Schema(
           },
         },
       },
-    ],
+    
   },
 
   { timestamps: true }
 );
 
 mallSchema.post("init", function () {
-  if (this.model[0].details.images)
-    this.model[0].details.images = this.model[0].details.images.map(
+  if (this.model.details.images)
+    this.model.details.images = this.model.details.images.map(
       (elm) => process.env.BaseURL + "mall/models/" + elm
     );
 });

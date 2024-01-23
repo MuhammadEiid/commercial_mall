@@ -90,12 +90,6 @@ const userSchema = new Schema(
         ref: "contact",
       },
     ],
-    appointment: [
-      {
-        type: Schema.ObjectId,
-        ref: "appointment",
-      },
-    ],
     isCustomPassword: {
       type: Boolean,
       default: false,

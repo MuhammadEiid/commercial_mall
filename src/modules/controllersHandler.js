@@ -201,7 +201,7 @@ const updateProfile = (model, type) => {
     });
 
     if (!document) {
-      return next(new AppError(`${type} Not Found`, 404));
+      return next(new AppError(`${type} Not Found, 404`));
     }
 
     let response = {};

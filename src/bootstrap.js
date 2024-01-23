@@ -1,7 +1,6 @@
 import { globalErrorHandler } from "./middleware/globalErrorHandler.js";
 import authRouter from "./modules/Authentication/authRouter.js";
 import adminRouter from "./modules/admin/adminRouter.js";
-import appointmentRouter from "./modules/appointment/Appointment.Router.js";
 import blogRouter from "./modules/blog/Blog.Router.js";
 import brandRouter from "./modules/brands/Brands.Router.js";
 import chatRouter from "./modules/chatbot/Chatbot.Router.js";
@@ -29,7 +28,6 @@ export function bootstrap(app) {
   app.use("/brands", brandRouter);
   app.use("/mall", mallRouter);
   app.use("/newsletter", newsletterRouter);
-  app.use("/appointment", appointmentRouter);
 
   app.all("*", (req, res, next) => {
     next(new AppError("Endpoint not found", 404));
