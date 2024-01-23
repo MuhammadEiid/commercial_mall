@@ -37,5 +37,8 @@ mallRouter.route("/").get(mall.getAllModels);
 mallRouter
   .route("/getAll")
   .get(protectedRoutes, allowedTo("admin"), mall.getlAllModelsNoPagination);
+mallRouter
+  .route("/get/data")
+  .get(protectedRoutes, allowedTo("admin"), mall.getAllWithoutImages);
 
 export default mallRouter;

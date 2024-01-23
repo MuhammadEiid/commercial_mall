@@ -75,6 +75,16 @@ const addModel = catchError(async (req, res, next) => {
 // ---------------------------------------------------------------- //
 // ----------------------- Get All Models ------------------------- //
 
+const getAllWithoutImages = catchError(async (req, res, next) => {
+  // Find the document by id
+  const mall = await mallModel.find({}, { "model.details.images": 0 });
+  if (!mall || mall.length === 0) {
+    return next(new AppError("Model not found", 404));
+  }
+  // Send the response without images
+  res.status(200).json({ mall });
+});
+
 const getAllModels = handler.getAll(mallModel, "Models");
 
 const getlAllModelsNoPagination = handler.getAllWithoutPaginationNoRole(
@@ -224,4 +234,5 @@ export {
   getOneModel,
   deleteModel,
   getlAllModelsNoPagination,
+  getAllWithoutImages,
 };
