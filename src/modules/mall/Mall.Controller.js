@@ -73,7 +73,7 @@ const addModel = catchError(async (req, res, next) => {
 });
 
 // ---------------------------------------------------------------- //
-// ----------------------- Get All Models ------------------------- //
+// ----------------------- Get All Models Without Images ------------------------- //
 
 const getAllWithoutImages = catchError(async (req, res, next) => {
   // Find the document by id
@@ -84,6 +84,8 @@ const getAllWithoutImages = catchError(async (req, res, next) => {
   // Send the response without images
   res.status(200).json({ mall });
 });
+
+// ----------------------- Get All Models ------------------------- //
 
 const getAllModels = handler.getAll(mallModel, "Models");
 
