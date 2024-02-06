@@ -4,7 +4,7 @@ import {
   allowedTo,
   protectedRoutes,
 } from "../Authentication/authController.js";
-import { getAllSubscribers, subscribe } from "./Newsletter.Controller.js";
+import { getAllSubscribers, subscribe } from "./newsletter.Controller.js";
 import { emailCheck } from "./newsletterValidation.js";
 
 const newsletterRouter = express.Router();
