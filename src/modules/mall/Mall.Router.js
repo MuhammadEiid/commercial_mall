@@ -18,6 +18,11 @@ mallRouter
     uploadMixedFiles(arrayOfFields, "mall/models"),
     mall.addModel
   );
+
+mallRouter
+  .route("/filter")
+  .post(protectedRoutes, allowedTo("admin"), mall.searchForUnit);
+
 mallRouter
   .route("/:id")
   .put(

@@ -2,35 +2,34 @@ import mongoose, { Schema, model } from "mongoose";
 
 const mallSchema = new Schema(
   {
-    model: 
-      {
-        mainType: {
-          type: String,
-          enum: ["Administrative", "Medical", "Commercial"],
+    model: {
+      mainType: {
+        type: String,
+        enum: ["Administrative", "Medical", "Commercial"],
+        required: true,
+      },
+
+      secondaryType: {
+        ar: { type: String, required: true },
+        en: { type: String, required: true },
+      },
+
+      details: {
+        unitIdentifier: { type: [String], required: true },
+        images: {
+          type: [String],
           required: true,
         },
-
-        secondaryType: {
-          ar: { type: String, required: true },
-          en: { type: String, required: true },
-        },
-
-        details: {
-          images: {
-            type: [String],
-            required: true,
-          },
-          length: { type: Number, required: true },
-          width: { type: Number, required: true },
-          height: { type: Number, required: true },
-          squareMeter: { type: Number, required: true },
-          description: {
-            ar: { type: String },
-            en: { type: String },
-          },
+        length: { type: Number, required: true },
+        width: { type: Number, required: true },
+        height: { type: Number, required: true },
+        squareMeter: { type: Number, required: true },
+        description: {
+          ar: { type: String },
+          en: { type: String },
         },
       },
-    
+    },
   },
 
   { timestamps: true }

@@ -19,8 +19,12 @@ const addModel = catchError(async (req, res, next) => {
     height,
     squareMeter,
     description,
+    unitIdentifier,
   } = req.body;
 
+  if (!unitIdentifier) {
+    return next(new AppError("Please enter valid unit identifier", 400));
+  }
   // Check if mainType is among the specified enum values
   const validMainTypes = ["Administrative", "Medical", "Commercial"];
   if (!validMainTypes.includes(mainType)) {
@@ -38,6 +42,7 @@ const addModel = catchError(async (req, res, next) => {
     squareMeter,
     description?.ar,
     description?.en,
+    unitIdentifier,
   ];
 
   if (requiredFields.some((field) => field === undefined)) {
@@ -53,6 +58,7 @@ const addModel = catchError(async (req, res, next) => {
       en: secondaryType.en,
     },
     details: {
+      unitIdentifier,
       images,
       length,
       width,
@@ -138,11 +144,13 @@ const updateModel = catchError(async (req, res, next) => {
 
   ["ar", "en"].forEach(updateDescription);
 
-  ["length", "width", "height", "squareMeter"].forEach((field) => {
-    if (req.body[field] !== undefined) {
-      mall.model.details[field] = req.body[field];
+  ["length", "width", "height", "squareMeter", "unitIdentifier"].forEach(
+    (field) => {
+      if (req.body[field] !== undefined) {
+        mall.model.details[field] = req.body[field];
+      }
     }
-  });
+  );
 
   // Delete old images if new images are provided
   if (req.files && req.files.images) {
@@ -227,6 +235,26 @@ const deleteModel = catchError(async (req, res, next) => {
   return res.status(200).json({ message: "Deleted Successfully" });
 });
 
+const searchForUnit = async (req, res, next) => {
+  const { id, unitIdentifier } = req.body;
+
+  const result = await mallModel.find({
+    $or: [
+      { "model.details.unitIdentifier": unitIdentifier },
+      { _id: id }, // Assuming details.id is stored in _id field
+    ],
+  });
+
+  if (result) {
+    res.status(200).json({
+      message: `Unit Found Successfully`,
+      result,
+    });
+  } else {
+    next(new AppError(`Unit Not Found`, 404));
+  }
+};
+
 export {
   addModel,
   updateModel,
@@ -235,4 +263,5 @@ export {
   deleteModel,
   getlAllModelsNoPagination,
   getAllWithoutImages,
+  searchForUnit,
 };
