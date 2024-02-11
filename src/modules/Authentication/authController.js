@@ -47,8 +47,8 @@ const signup = catchError(async (req, res, next) => {
     }
   );
 
-  let link = `${req.protocol}://${req.headers.host}/auth/confirmEmail/${token}`;
-  let refreshLink = `${req.protocol}://${req.headers.host}/auth/newConfirmEmail/${refreshToken}`;
+  let link = `https://nexusbhub.com/backend/auth/confirmEmail/${token}`;
+  let refreshLink = `https://nexusbhub.com/backend/auth/newConfirmEmail/${refreshToken}`;
 
   let activationHTML = verifyHTML(link, refreshLink);
 
@@ -326,7 +326,7 @@ passport.use(
       clientID:
         "830222166488-8a6ucqcahne2ss6l6vi16vu3360dch6p.apps.googleusercontent.com",
       clientSecret: "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",
-      callbackURL: "/auth/google/callback", // Replace with your callback URL
+      callbackURL: "https://nexusbhub.com/backend/auth/google/callback", // Replace with your callback URL
     },
 
     async (accessToken, refreshToken, profile, done) => {

@@ -8,8 +8,8 @@ export const verifyHTML = (link, refreshLink) => {
       <style>
           /* Add your custom styles here */
           body {
-              font-family: Arial, sans-serif;
-              background-color: #f4f4f4;
+              font-family: 'Arial', sans-serif;
+              background-color: #13263D;
               margin: 0;
               padding: 0;
           }
@@ -18,7 +18,8 @@ export const verifyHTML = (link, refreshLink) => {
               max-width: 600px;
               margin: 0 auto;
               padding: 20px;
-              background-color: #fff;
+              background-color: #13263D;
+  
               /* Match the background color */
               border-radius: 8px;
               box-sizing: border-box;
@@ -47,7 +48,7 @@ export const verifyHTML = (link, refreshLink) => {
   
           .verification-buttons a {
               display: inline-block;
-              background-color: #c49615;
+              background-color: rgb(90, 9, 9);
               color: #fafafa;
               text-decoration: none;
               padding: 10px 20px;
@@ -61,8 +62,13 @@ export const verifyHTML = (link, refreshLink) => {
       <div class="container">
   
           <div class="verification-message">
-              <h2 style="color: #c49615;">Account Verification</h2>
-              <p>Thank you for registering an account with us. Please verify your email address to activate your account.
+              <h2 style="color: white; font-size: 19px;">Account Verification</h2>
+              <p style="color: white; font-size: 15px; letter-spacing: 1.2px; line-height: 1.4;">Thank you for registering
+                  an account with
+                  us.
+                  Please verify your
+                  email address to
+                  activate your account.
               </p>
           </div>
           <div class="verification-buttons">
