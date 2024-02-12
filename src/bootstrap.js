@@ -11,6 +11,7 @@ import mallRouter from "./modules/mall/Mall.Router.js";
 import newsletterRouter from "./modules/newsletter/newsletter.Router.js";
 import reviewRouter from "./modules/review/reviewRouter.js";
 import serviceRouter from "./modules/services/Service.Router.js";
+import timelineRouter from "./modules/timeline/Timeline.Router.js";
 import userRouter from "./modules/user/userRouter.js";
 import { AppError } from "./utils/AppError.js";
 
@@ -28,6 +29,7 @@ export function bootstrap(app) {
   app.use("/brands", brandRouter);
   app.use("/mall", mallRouter);
   app.use("/newsletter", newsletterRouter);
+  app.use("/backend/timeline", timelineRouter);
 
   app.all("*", (req, res, next) => {
     next(new AppError("Endpoint not found", 404));
