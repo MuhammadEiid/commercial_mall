@@ -19,9 +19,7 @@ mallRouter
     mall.addModel
   );
 
-mallRouter
-  .route("/filter")
-  .post(protectedRoutes, allowedTo("admin"), mall.searchForUnit);
+mallRouter.route("/filter").post(mall.searchForUnit);
 
 mallRouter
   .route("/:id")

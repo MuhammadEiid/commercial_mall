@@ -236,16 +236,13 @@ const deleteModel = catchError(async (req, res, next) => {
 });
 
 const searchForUnit = async (req, res, next) => {
-  const { id, unitIdentifier } = req.body;
+  const { unitIdentifier } = req.body;
 
   const result = await mallModel.find({
-    $or: [
-      { "model.details.unitIdentifier": unitIdentifier },
-      { _id: id }, // Assuming details.id is stored in _id field
-    ],
+    "model.details.unitIdentifier": unitIdentifier,
   });
 
-  if (result) {
+  if (result.length > 0) {
     res.status(200).json({
       message: `Unit Found Successfully`,
       result,
