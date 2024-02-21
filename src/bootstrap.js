@@ -7,6 +7,7 @@ import chatRouter from "./modules/chatbot/Chatbot.Router.js";
 import contactRouter from "./modules/contact/Contact.Router.js";
 import featureRouter from "./modules/features/Features.Router.js";
 import galleryRouter from "./modules/gallery/Gallery.Router.js";
+import homeRouter from "./modules/home/Home.Router.js";
 import mallRouter from "./modules/mall/Mall.Router.js";
 import newsletterRouter from "./modules/newsletter/newsletter.Router.js";
 import reviewRouter from "./modules/review/reviewRouter.js";
@@ -29,7 +30,8 @@ export function bootstrap(app) {
   app.use("/brands", brandRouter);
   app.use("/mall", mallRouter);
   app.use("/newsletter", newsletterRouter);
-  app.use("/backend/timeline", timelineRouter);
+  app.use("/timeline", timelineRouter);
+  app.use("/home", homeRouter);
 
   app.all("*", (req, res, next) => {
     next(new AppError("Endpoint not found", 404));
