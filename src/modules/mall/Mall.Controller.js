@@ -20,6 +20,7 @@ const addModel = catchError(async (req, res, next) => {
     squareMeter,
     description,
     unitIdentifier,
+    availability,
   } = req.body;
 
   if (!unitIdentifier) {
@@ -68,6 +69,7 @@ const addModel = catchError(async (req, res, next) => {
         ar: description.ar,
         en: description.en,
       },
+      availability,
     },
   };
 
@@ -144,13 +146,18 @@ const updateModel = catchError(async (req, res, next) => {
 
   ["ar", "en"].forEach(updateDescription);
 
-  ["length", "width", "height", "squareMeter", "unitIdentifier"].forEach(
-    (field) => {
-      if (req.body[field] !== undefined) {
-        mall.model.details[field] = req.body[field];
-      }
+  [
+    "length",
+    "width",
+    "height",
+    "squareMeter",
+    "unitIdentifier",
+    "availability",
+  ].forEach((field) => {
+    if (req.body[field] !== undefined) {
+      mall.model.details[field] = req.body[field];
     }
-  );
+  });
 
   // Delete old images if new images are provided
   if (req.files && req.files.images) {
@@ -252,7 +259,33 @@ const searchForUnit = async (req, res, next) => {
   }
 };
 
+const searchByMainType = async (req, res, next) => {
+  const { mainType } = req.body;
+
+  // Check if mainType is among the specified enum values
+  const validMainTypes = ["Administrative", "Medical", "Commercial"];
+  if (!validMainTypes.includes(mainType)) {
+    return next(new AppError("Invalid Main Type value", 400));
+  }
+  const units = await mallModel.find(
+    { "model.mainType": mainType },
+    {
+      "model.mainType": mainType,
+      "model.details.unitIdentifier": 1,
+      "model.details.availability": 1,
+      _id: 0,
+    }
+  );
+
+  if (units.length > 0) {
+    return res.status(200).json({ message: `Units Found Successfully`, units });
+  } else {
+    return next(new AppError(`No Units Available`, 404));
+  }
+};
+
 export {
+  searchByMainType,
   addModel,
   updateModel,
   getAllModels,

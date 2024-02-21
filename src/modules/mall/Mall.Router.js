@@ -20,6 +20,7 @@ mallRouter
   );
 
 mallRouter.route("/filter").post(mall.searchForUnit);
+mallRouter.route("/availability").post(mall.searchByMainType);
 
 mallRouter
   .route("/:id")

@@ -28,6 +28,11 @@ const mallSchema = new Schema(
           ar: { type: String },
           en: { type: String },
         },
+
+        availability: {
+          type: Boolean,
+          default: false,
+        },
       },
     },
   },
