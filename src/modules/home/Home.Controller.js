@@ -67,8 +67,11 @@ const addImages = catchError(async (req, res, next) => {
       new AppError("Both English and Arabic titles are required", 400)
     );
   }
-  if (!req.body.buttonURL || !req.body.buttonURL) {
+  if (!req.body.hyperlink) {
     return next(new AppError("Please Enter Url", 400));
+  }
+  if (!req.body.text) {
+    return next(new AppError("Please Enter Valid Button Text", 400));
   }
   // Create a new image object
   const newImage = {
@@ -77,7 +80,10 @@ const addImages = catchError(async (req, res, next) => {
       en: req.body.en, // English title
       ar: req.body.ar, // Arabic title
     },
-    buttonURL: req.body.buttonURL,
+    button: {
+      hyperlink: req.body.hyperlink,
+      text: req.body.text,
+    },
   };
 
   // Find the home document and push the new image to the "images" array
@@ -114,8 +120,11 @@ const addVideos = catchError(async (req, res, next) => {
     );
   }
 
-  if (!req.body.buttonURL || !req.body.buttonURL) {
-    return next(new AppError("Please Enter Url", 400));
+  if (!req.body.hyperlink) {
+    return next(new AppError("Please Enter Button Url", 400));
+  }
+  if (!req.body.text) {
+    return next(new AppError("Please Enter Valid Button Text", 400));
   }
   // Create a new video object
   const newVideo = {
@@ -124,7 +133,11 @@ const addVideos = catchError(async (req, res, next) => {
       en: req.body.en, // English title
       ar: req.body.ar, // Arabic title
     },
-    buttonURL: req.body.buttonURL,
+
+    button: {
+      hyperlink: req.body.hyperlink,
+      text: req.body.text,
+    },
   };
 
   // Find the home document and push the new video to the "videos" array

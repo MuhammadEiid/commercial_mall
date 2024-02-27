@@ -24,8 +24,13 @@ const homeSchema = new Schema(
             type: String,
           },
         },
-        buttonURL: {
-          type: String,
+        button: {
+          hyperlink: {
+            type: String,
+          },
+          text: {
+            type: String,
+          },
         },
       },
     ],
@@ -40,8 +45,13 @@ const homeSchema = new Schema(
             type: String,
           },
         },
-        buttonURL: {
-          type: String,
+        button: {
+          hyperlink: {
+            type: String,
+          },
+          text: {
+            type: String,
+          },
         },
       },
     ],
