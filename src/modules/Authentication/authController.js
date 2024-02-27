@@ -326,9 +326,8 @@ passport.use(
       clientID:
         "830222166488-8a6ucqcahne2ss6l6vi16vu3360dch6p.apps.googleusercontent.com",
       clientSecret: "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",
-      callbackURL: "https://nexusbhub.com/backend/auth/google/callback", // Replace with your callback URL
+      callbackURL: "https://nexusbhub.com/backend/auth/google/callback",
     },
-
     async (accessToken, refreshToken, profile, done) => {
       try {
         // Retrieve user details from the profile object
@@ -345,10 +344,10 @@ passport.use(
         });
 
         if (user) {
-          // Generate tokens for the user
-          const token = jwt.sign(
+          // Generate tokens for the user and attach them to the user object
+          user.token = jwt.sign(
             {
-              id: user.id,
+              id: user._id,
               email: user.email,
               role: user.role,
             },
@@ -358,9 +357,9 @@ passport.use(
             }
           );
 
-          const refreshToken = jwt.sign(
+          user.refreshToken = jwt.sign(
             {
-              id: user.id,
+              id: user._id,
               email: user.email,
               role: user.role,
             },
@@ -372,11 +371,11 @@ passport.use(
 
           // Update isActive field for the user
           await userModel.findByIdAndUpdate(
-            { _id: user.id },
+            { _id: user._id },
             { isActive: true }
           );
 
-          return done(null, { token, refreshToken });
+          return done(null, user); // Return the user object with tokens attached
         }
 
         const customPassword = customAlphabet(
@@ -392,17 +391,19 @@ passport.use(
             ar: displayName,
           },
           password: customPassword(8),
-          profilePic: photos[0].value,
           provider: "Google",
+          role: "user",
           verified: true,
           isActive: true,
           isCustomPassword: true,
         });
 
-        const token = jwt.sign(
+        // Generate tokens for the new user and attach them to the user object
+        newUser.token = jwt.sign(
           {
-            id: newUser.id,
+            id: newUser._id,
             email: newUser.email,
+            role: newUser.role,
           },
           process.env.LOGIN_TOKEN,
           {
@@ -410,10 +411,11 @@ passport.use(
           }
         );
 
-        const refreshToken = jwt.sign(
+        newUser.refreshToken = jwt.sign(
           {
             id: newUser.id,
             email: newUser.email,
+            role: newUser.role,
           },
           process.env.LOGIN_TOKEN,
           {
@@ -422,9 +424,8 @@ passport.use(
         );
 
         await newUser.save();
-        return done(null, { token, refreshToken, newUser });
+        return done(null, newUser); // Return the new user object with tokens attached
       } catch (error) {
-        // Pass the error to the next middleware (error handling)
         return done(error);
       }
     }
@@ -447,7 +448,7 @@ const loginSuccess = catchError(async (req, res, next) => {
   if (req.user) {
     res.status(200).json({
       success: true,
-      message: "successfull",
+      message: "success",
       user: req.user,
       // cookies: req.cookies
     });

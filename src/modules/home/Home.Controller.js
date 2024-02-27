@@ -67,6 +67,9 @@ const addImages = catchError(async (req, res, next) => {
       new AppError("Both English and Arabic titles are required", 400)
     );
   }
+  if (!req.body.buttonURL || !req.body.buttonURL) {
+    return next(new AppError("Please Enter Url", 400));
+  }
   // Create a new image object
   const newImage = {
     image: req.file.filename, // The name of the uploaded image file
@@ -74,6 +77,7 @@ const addImages = catchError(async (req, res, next) => {
       en: req.body.en, // English title
       ar: req.body.ar, // Arabic title
     },
+    buttonURL: req.body.buttonURL,
   };
 
   // Find the home document and push the new image to the "images" array
@@ -109,6 +113,10 @@ const addVideos = catchError(async (req, res, next) => {
       new AppError("Both English and Arabic titles are required", 400)
     );
   }
+
+  if (!req.body.buttonURL || !req.body.buttonURL) {
+    return next(new AppError("Please Enter Url", 400));
+  }
   // Create a new video object
   const newVideo = {
     video: req.file.filename, // The name of the uploaded video file
@@ -116,6 +124,7 @@ const addVideos = catchError(async (req, res, next) => {
       en: req.body.en, // English title
       ar: req.body.ar, // Arabic title
     },
+    buttonURL: req.body.buttonURL,
   };
 
   // Find the home document and push the new video to the "videos" array

@@ -21,7 +21,6 @@ authRouter.get(
 
 authRouter.get(
   "/google/callback",
-
   passport.authenticate("google", {
     session: false,
     failureRedirect: "/login/failed",
@@ -44,33 +43,3 @@ authRouter.post("/forget", user.forgetPassword);
 authRouter.post("/reset/:token", user.resetPassword);
 
 export default authRouter;
-
-// authRouter.get(
-//   "/github",
-//   passport.authenticate("github", { scope: ["profile"] })
-// );
-
-// authRouter.get(
-//   "/github/callback",
-//   passport.authenticate("github", {
-//     successRedirect: process.env.FRONTEND,
-//     failureRedirect: "/login/failed",
-//   })
-// );
-
-// authRouter.get(
-//   "/facebook",
-//   passport.authenticate("facebook", { scope: ["profile"] })
-// );
-
-// authRouter.get(
-//   "/facebook/callback",
-//   passport.authenticate("facebook", {
-//     successRedirect: process.env.FRONTEND,
-//     failureRedirect: "/login/failed",
-//   })
-// );
-
-// // Social Login
-// authRouter.get("/google", user.loginWithGmail);
-// authRouter.get("/google/callback", user.loginWithGmailCallback);

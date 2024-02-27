@@ -24,6 +24,9 @@ const homeSchema = new Schema(
             type: String,
           },
         },
+        buttonURL: {
+          type: String,
+        },
       },
     ],
     videos: [
@@ -36,6 +39,9 @@ const homeSchema = new Schema(
           ar: {
             type: String,
           },
+        },
+        buttonURL: {
+          type: String,
         },
       },
     ],
