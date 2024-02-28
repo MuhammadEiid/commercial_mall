@@ -31,10 +31,10 @@ homeRouter.route("/images").delete(protectedRoutes, home.deleteAllImages);
 homeRouter.route("/videos").delete(protectedRoutes, home.deleteAllVideos);
 
 homeRouter.route("/").get(home.getAllHome);
-homeRouter
-  .route("/layertext")
-  .put(home.updateLayerText)
-  .delete(home.deleteLayerText);
+// homeRouter
+//   .route("/layertext")
+//   .put(home.updateLayerText)
+//   .delete(home.deleteLayerText);
 
 homeRouter
   .route("/getAll")

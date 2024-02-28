@@ -2,15 +2,6 @@ import mongoose, { Schema, model } from "mongoose";
 
 const homeSchema = new Schema(
   {
-    layerText: {
-      en: {
-        type: String,
-      },
-      ar: {
-        type: String,
-      },
-    },
-
     images: [
       {
         image: {
@@ -29,11 +20,36 @@ const homeSchema = new Schema(
             type: String,
           },
           text: {
-            type: String,
+            en: {
+              type: String,
+            },
+            ar: {
+              type: String,
+            },
+          },
+        },
+
+        layerText: {
+          title: {
+            en: {
+              type: String,
+            },
+            ar: {
+              type: String,
+            },
+          },
+          description: {
+            en: {
+              type: String,
+            },
+            ar: {
+              type: String,
+            },
           },
         },
       },
     ],
+
     videos: [
       {
         video: String,
@@ -45,12 +61,37 @@ const homeSchema = new Schema(
             type: String,
           },
         },
+
         button: {
           hyperlink: {
             type: String,
           },
           text: {
-            type: String,
+            en: {
+              type: String,
+            },
+            ar: {
+              type: String,
+            },
+          },
+        },
+
+        layerText: {
+          title: {
+            en: {
+              type: String,
+            },
+            ar: {
+              type: String,
+            },
+          },
+          description: {
+            en: {
+              type: String,
+            },
+            ar: {
+              type: String,
+            },
           },
         },
       },

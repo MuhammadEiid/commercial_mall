@@ -8,81 +8,48 @@ import { homeModel } from "../../../Database/models/Homepage.model.js";
 // Function to promisify fs.unlink
 const unlinkAsync = promisify(fs.unlink);
 
-const updateLayerText = catchError(async (req, res, next) => {
-  const { en, ar } = req.body;
-
-  if (!en && !ar) {
-    return next(
-      new AppError("you must provide layer text with arabic and english", 400)
-    );
-  }
-
-  let home = await homeModel.findOne({});
-
-  if (!home) {
-    return next(new AppError("Home document not found", 404));
-  }
-
-  if (en) home.layerText.en = en;
-  if (ar) home.layerText.ar = ar;
-
-  const updatedHome = await home.save();
-
-  if (!updatedHome) {
-    return next(new AppError("Failed to update layer text", 500));
-  }
-
-  res.json({
-    layerText: updatedHome.layerText,
-  });
-});
-
-const deleteLayerText = catchError(async (req, res, next) => {
-  let home = await homeModel.findOne({});
-
-  if (!home || !home.layerText) {
-    return next(new AppError("Layer text not found", 404));
-  }
-
-  home.layerText = undefined;
-
-  const updatedHome = await home.save();
-
-  if (!updatedHome) {
-    return next(new AppError("Failed to delete layer text", 500));
-  }
-
-  res.json({ message: "Layer text deleted successfully" });
-});
-
 // Add images
 const addImages = catchError(async (req, res, next) => {
-  // Assuming you're using multer to upload the image
-  if (!req.file) {
-    return next(new AppError("No image file provided", 400));
+  const { alt, hyperlink, text, title, description } = req.body;
+
+  if (
+    !req.file ||
+    !hyperlink ||
+    !text.en ||
+    !text.ar ||
+    !title.en ||
+    !title.ar ||
+    !description.en ||
+    !description.ar
+  ) {
+    return next(new AppError("Invalid input data", 400));
   }
 
-  if (!req.body.en || !req.body.ar) {
-    return next(
-      new AppError("Both English and Arabic titles are required", 400)
-    );
-  }
-  if (!req.body.hyperlink) {
-    return next(new AppError("Please Enter Url", 400));
-  }
-  if (!req.body.text) {
-    return next(new AppError("Please Enter Valid Button Text", 400));
-  }
   // Create a new image object
   const newImage = {
     image: req.file.filename, // The name of the uploaded image file
     alt: {
-      en: req.body.en, // English title
-      ar: req.body.ar, // Arabic title
+      en: alt.en, // English alt
+      ar: alt.ar, // Arabic alt
     },
     button: {
-      hyperlink: req.body.hyperlink,
-      text: req.body.text,
+      hyperlink,
+      text: {
+        en: text.en, // English text
+        ar: text.ar, // Arabic text
+      },
+    },
+
+    layerText: {
+      title: {
+        en: title.en, // English title
+        ar: title.ar, // Arabic title
+      },
+
+      description: {
+        en: description.en, // English description
+        ar: description.ar, // Arabic description
+      },
     },
   };
 
@@ -109,34 +76,44 @@ const addImages = catchError(async (req, res, next) => {
 
 // Add Video
 const addVideos = catchError(async (req, res, next) => {
-  // Assuming you're using multer to upload the video
-  if (!req.file) {
-    return next(new AppError("No video file provided", 400));
-  }
-
-  if (!req.body.en || !req.body.ar) {
-    return next(
-      new AppError("Both English and Arabic titles are required", 400)
-    );
-  }
-
-  if (!req.body.hyperlink) {
-    return next(new AppError("Please Enter Button Url", 400));
-  }
-  if (!req.body.text) {
-    return next(new AppError("Please Enter Valid Button Text", 400));
+  const { alt, hyperlink, text, title, description } = req.body;
+  if (
+    !req.file ||
+    !hyperlink ||
+    !text.en ||
+    !text.ar ||
+    !title.en ||
+    !title.ar ||
+    !description.en ||
+    !description.ar
+  ) {
+    return next(new AppError("Invalid input data", 400));
   }
   // Create a new video object
   const newVideo = {
     video: req.file.filename, // The name of the uploaded video file
     alt: {
-      en: req.body.en, // English title
-      ar: req.body.ar, // Arabic title
+      en: alt.en, // English alt
+      ar: alt.ar, // Arabic alt
+    },
+    button: {
+      hyperlink,
+      text: {
+        en: text.en, // English text
+        ar: text.ar, // Arabic text
+      },
     },
 
-    button: {
-      hyperlink: req.body.hyperlink,
-      text: req.body.text,
+    layerText: {
+      title: {
+        en: title.en, // English title
+        ar: title.ar, // Arabic title
+      },
+
+      description: {
+        en: description.en, // English description
+        ar: description.ar, // Arabic description
+      },
     },
   };
 
@@ -317,6 +294,53 @@ export {
   getAllHome,
   deleteImage,
   getAllHomeNoPagination,
-  updateLayerText,
-  deleteLayerText,
+  // updateLayerText,
+  // deleteLayerText,
 };
+
+// const updateLayerText = catchError(async (req, res, next) => {
+//   const { en, ar } = req.body;
+
+//   if (!en && !ar) {
+//     return next(
+//       new AppError("you must provide layer text with arabic and english", 400)
+//     );
+//   }
+
+//   let home = await homeModel.findOne({});
+
+//   if (!home) {
+//     return next(new AppError("Home document not found", 404));
+//   }
+
+//   if (en) home.layerText.en = en;
+//   if (ar) home.layerText.ar = ar;
+
+//   const updatedHome = await home.save();
+
+//   if (!updatedHome) {
+//     return next(new AppError("Failed to update layer text", 500));
+//   }
+
+//   res.json({
+//     layerText: updatedHome.layerText,
+//   });
+// });
+
+// const deleteLayerText = catchError(async (req, res, next) => {
+//   let home = await homeModel.findOne({});
+
+//   if (!home || !home.layerText) {
+//     return next(new AppError("Layer text not found", 404));
+//   }
+
+//   home.layerText = undefined;
+
+//   const updatedHome = await home.save();
+
+//   if (!updatedHome) {
+//     return next(new AppError("Failed to delete layer text", 500));
+//   }
+
+//   res.json({ message: "Layer text deleted successfully" });
+// })
