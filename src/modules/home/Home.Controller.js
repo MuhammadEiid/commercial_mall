@@ -11,16 +11,15 @@ const unlinkAsync = promisify(fs.unlink);
 // Add images
 const addImages = catchError(async (req, res, next) => {
   const { alt, hyperlink, text, title, description } = req.body;
-
   if (
     !req.file ||
     !hyperlink ||
-    !text.en ||
-    !text.ar ||
-    !title.en ||
-    !title.ar ||
-    !description.en ||
-    !description.ar
+    !text?.en ||
+    !text?.ar ||
+    !title?.en ||
+    !title?.ar ||
+    !description?.en ||
+    !description?.ar
   ) {
     return next(new AppError("Invalid input data", 400));
   }
