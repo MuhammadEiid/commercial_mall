@@ -82,7 +82,7 @@ const updateBlog = catchError(async (req, res, next) => {
   }
 
   const updatedBlog = await blogModel.findOneAndUpdate(
-    { _id: id, user: req.user._id },
+    { _id: id },
     { $set: req.body },
     { new: true }
   );

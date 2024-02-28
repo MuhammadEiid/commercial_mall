@@ -73,7 +73,7 @@ const blogSchema = new Schema(
 
 blogSchema.post("init", function () {
   if (this.imageCover)
-    this.imageCover = process.env.BaseURL + "blogs/" + this.imageCover;
+    this.imageCover = process.env.BaseURL + "backend/blogs/" + this.imageCover;
 });
 
 export const blogModel = mongoose.models.blog || model("blog", blogSchema);
