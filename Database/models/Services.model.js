@@ -68,8 +68,9 @@ const serviceSchema = new Schema(
 );
 
 serviceSchema.post("init", function () {
-  if (this.imageCover)
+  if (this.imageCover && !this.imageCover.startsWith(process.env.BaseURL)) {
     this.imageCover = process.env.BaseURL + "services/" + this.imageCover;
+  }
 });
 
 export const serviceModel =

@@ -36,7 +36,9 @@ const timelineSchema = new Schema(
 );
 
 timelineSchema.post("init", function () {
-  if (this.image) this.image = process.env.BaseURL + "timeline/" + this.image;
+  if (this.image && !this.image.startsWith(process.env.BaseURL)) {
+    this.image = process.env.BaseURL + "timeline/" + this.image;
+  }
 });
 
 export const timelineModel =

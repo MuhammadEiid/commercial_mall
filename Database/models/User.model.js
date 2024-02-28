@@ -118,7 +118,7 @@ userSchema.pre("findOneAndUpdate", function () {
 });
 
 userSchema.post("init", function () {
-  if (this.profilePic) {
+  if (this.profilePic && !this.profilePic.startsWith(process.env.BaseURL)) {
     if (this.role === "admin") {
       this.profilePic = process.env.BaseURL + "admins/" + this.profilePic;
     } else {

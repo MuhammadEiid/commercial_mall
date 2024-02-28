@@ -23,12 +23,16 @@ const brandSchema = new Schema(
   },
   { timestamps: true }
 );
-
 brandSchema.post("init", function () {
+  const baseURL = process.env.BaseURL;
+
   if (this.images) {
     this.images.forEach((image) => {
-      image.image = process.env.BaseURL + "mall/brands/" + image.image;
+      if (!image.image.startsWith(baseURL)) {
+        image.image = baseURL + "mall/brands/" + image.image;
+      }
     });
   }
 });
+
 export const brandModel = mongoose.models.brand || model("brand", brandSchema);

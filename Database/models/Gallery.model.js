@@ -38,15 +38,21 @@ const gallerySchema = new Schema(
 );
 
 gallerySchema.post("init", function () {
+  const baseURL = process.env.BaseURL;
+
   if (this.images) {
     this.images.forEach((image) => {
-      image.image = process.env.BaseURL + "gallery/" + image.image;
+      if (!image.image.startsWith(baseURL)) {
+        image.image = baseURL + "gallery/" + image.image;
+      }
     });
   }
 
   if (this.videos) {
     this.videos.forEach((video) => {
-      video.video = process.env.BaseURL + "gallery/" + video.video;
+      if (!video.video.startsWith(baseURL)) {
+        video.video = baseURL + "gallery/" + video.video;
+      }
     });
   }
 });

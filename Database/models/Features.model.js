@@ -67,8 +67,11 @@ const featuresSchema = new Schema(
 );
 
 featuresSchema.post("init", function () {
-  if (this.imageCover)
-    this.imageCover = process.env.BaseURL + "features/" + this.imageCover;
+  const baseURL = process.env.BaseURL;
+
+  if (this.imageCover && !this.imageCover.startsWith(baseURL)) {
+    this.imageCover = baseURL + "features/" + this.imageCover;
+  }
 });
 
 export const featuresModel =

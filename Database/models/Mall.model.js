@@ -41,10 +41,14 @@ const mallSchema = new Schema(
 );
 
 mallSchema.post("init", function () {
-  if (this.model.details.images)
-    this.model.details.images = this.model.details.images.map(
-      (elm) => process.env.BaseURL + "mall/models/" + elm
-    );
+  if (this.model.details.images && Array.isArray(this.model.details.images)) {
+    this.model.details.images = this.model.details.images.map((elm) => {
+      if (!elm.startsWith(process.env.BaseURL)) {
+        return process.env.BaseURL + "mall/models/" + elm;
+      }
+      return elm;
+    });
+  }
 });
 
 export const mallModel = mongoose.models.mall || model("mall", mallSchema);
