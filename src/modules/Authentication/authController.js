@@ -389,10 +389,7 @@ passport.use(
           "12345678!_=abcdefghm.,rqwpoi*",
           8
         ); // Implement this function to generate a secure random password
-        const hashedPassword = bcrypt.hashSync(
-          generatedPassword,
-          parseInt(process.env.SALT)
-        );
+        const hashedPassword = bcrypt.hashSync(generatedPassword, 8);
 
         // Sign up user if user is not found
         const newUser = await userModel.create({
