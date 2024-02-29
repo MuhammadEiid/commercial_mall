@@ -344,6 +344,18 @@ passport.use(
         });
 
         if (user) {
+          // User already exists
+          if (user.isCustomPassword) {
+            // If the user has a custom password, update it with the new password and hash it
+            if (user.isModified("password")) {
+              user.password = bcrypt.hashSync(
+                user.password,
+                parseInt(process.env.SALT)
+              );
+              user.isCustomPassword = false; // Reset the flag for custom password
+            }
+          }
+
           // Generate tokens for the user and attach them to the user object
           user.token = jwt.sign(
             {
@@ -368,19 +380,18 @@ passport.use(
               expiresIn: "365d",
             }
           );
-
-          // Update isActive field for the user
-          await userModel.findByIdAndUpdate(
-            { _id: user._id },
-            { isActive: true }
-          );
+          user.isActive = true;
 
           return done(null, user); // Return the user object with tokens attached
         }
 
-        const customPassword = customAlphabet(
+        const generatedPassword = customAlphabet(
           "12345678!_=abcdefghm.,rqwpoi*",
           8
+        ); // Implement this function to generate a secure random password
+        const hashedPassword = bcrypt.hashSync(
+          generatedPassword,
+          parseInt(process.env.SALT)
         );
 
         // Sign up user if user is not found
@@ -390,7 +401,7 @@ passport.use(
             en: displayName,
             ar: displayName,
           },
-          password: customPassword(8),
+          password: hashedPassword,
           provider: "Google",
           role: "user",
           verified: true,
