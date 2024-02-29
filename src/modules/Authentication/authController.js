@@ -259,7 +259,7 @@ const forgetPassword = catchError(async (req, res, next) => {
     }
   );
 
-  const resetPasswordLink = `${req.protocol}://localhost:3000/sign/reset/${token}`;
+  const resetPasswordLink = `${req.protocol}://localhost:4000/sign/reset/${token}`;
   const userName = user.name.en || user.name.ar;
   await sendEmail({
     to: email,
@@ -348,10 +348,7 @@ passport.use(
           if (user.isCustomPassword) {
             // If the user has a custom password, update it with the new password and hash it
             if (user.isModified("password")) {
-              user.password = bcrypt.hashSync(
-                user.password,
-                parseInt(process.env.SALT)
-              );
+              user.password = bcrypt.hashSync(user.password, 8);
               user.isCustomPassword = false; // Reset the flag for custom password
             }
           }
@@ -385,10 +382,11 @@ passport.use(
           return done(null, user); // Return the user object with tokens attached
         }
 
+        // Implement this function to generate a secure random password
         const generatedPassword = customAlphabet(
           "12345678!_=abcdefghm.,rqwpoi*",
           8
-        ); // Implement this function to generate a secure random password
+        ).toString(); // Convert the generated password to a string
         const hashedPassword = bcrypt.hashSync(generatedPassword, 8);
 
         // Sign up user if user is not found

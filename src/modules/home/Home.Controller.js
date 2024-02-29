@@ -10,62 +10,54 @@ const unlinkAsync = promisify(fs.unlink);
 
 // Add images
 const addImages = catchError(async (req, res, next) => {
-  const { alt, hyperlink, text, title, description } = req.body;
-  if (
-    !req.file ||
-    !hyperlink ||
-    !text?.en ||
-    !text?.ar ||
-    !title?.en ||
-    !title?.ar ||
-    !description?.en ||
-    !description?.ar
-  ) {
-    return next(new AppError("Invalid input data", 400));
+  if (!req.file) {
+    return next(new AppError("No image file provided", 400));
   }
 
-  // Create a new image object
+  // Initialize the newImage object with the uploaded image filename
   const newImage = {
     image: req.file.filename, // The name of the uploaded image file
-    alt: {
-      en: alt.en, // English alt
-      ar: alt.ar, // Arabic alt
-    },
-    button: {
-      hyperlink,
-      text: {
-        en: text.en, // English text
-        ar: text.ar, // Arabic text
-      },
-    },
-
-    layerText: {
-      title: {
-        en: title.en, // English title
-        ar: title.ar, // Arabic title
-      },
-
-      description: {
-        en: description.en, // English description
-        ar: description.ar, // Arabic description
-      },
-    },
   };
 
-  // Find the home document and push the new image to the "images" array
-  let home = await homeModel.findOne({});
+  // Dynamically add properties to the newImage object based on the provided request body
+  if (req.body.alt || req.body.text || req.body.title || req.body.description) {
+    newImage.alt = {
+      en: req.body.alt ? req.body.alt.en : "", // Provide default values or leave blank if not provided
+      ar: req.body.alt ? req.body.alt.ar : "",
+    };
+    newImage.button = {
+      hyperlink: req.body.hyperlink || "", // Provide a default or leave blank
+      text: {
+        en: req.body.text ? req.body.text.en : "",
+        ar: req.body.text ? req.body.text.ar : "",
+      },
+    };
+    newImage.layerText = {
+      title: {
+        en: req.body.title ? req.body.title.en : "",
+        ar: req.body.title ? req.body.title.ar : "",
+      },
+      description: {
+        en: req.body.description ? req.body.description.en : "",
+        ar: req.body.description ? req.body.description.ar : "",
+      },
+    };
+  }
 
+  // Find or create the home document
+  let home = await homeModel.findOne({});
   if (!home) {
-    // Create a new home document
     home = new homeModel({});
     await home.save();
   }
 
+  // Add the new image to the home document
   const updatedHome = await homeModel.findOneAndUpdate(
     {},
     { $push: { images: newImage } },
     { new: true }
   );
+
   if (!updatedHome) {
     return next(new AppError("Failed to add the image", 500));
   } else {
@@ -75,56 +67,48 @@ const addImages = catchError(async (req, res, next) => {
 
 // Add Video
 const addVideos = catchError(async (req, res, next) => {
-  const { alt, hyperlink, text, title, description } = req.body;
-  if (
-    !req.file ||
-    !hyperlink ||
-    !text.en ||
-    !text.ar ||
-    !title.en ||
-    !title.ar ||
-    !description.en ||
-    !description.ar
-  ) {
-    return next(new AppError("Invalid input data", 400));
+  if (!req.file) {
+    return next(new AppError("No video file provided", 400));
   }
-  // Create a new video object
+
+  // Initialize the newVideo object with the uploaded video filename
   const newVideo = {
     video: req.file.filename, // The name of the uploaded video file
-    alt: {
-      en: alt.en, // English alt
-      ar: alt.ar, // Arabic alt
-    },
-    button: {
-      hyperlink,
-      text: {
-        en: text.en, // English text
-        ar: text.ar, // Arabic text
-      },
-    },
-
-    layerText: {
-      title: {
-        en: title.en, // English title
-        ar: title.ar, // Arabic title
-      },
-
-      description: {
-        en: description.en, // English description
-        ar: description.ar, // Arabic description
-      },
-    },
   };
 
-  // Find the home document and push the new video to the "videos" array
-  let home = await homeModel.findOne({});
+  // Dynamically add properties to the newVideo object based on the provided request body
+  if (req.body.alt || req.body.text || req.body.title || req.body.description) {
+    newVideo.alt = {
+      en: req.body.alt ? req.body.alt.en : "", // Provide default values or leave blank if not provided
+      ar: req.body.alt ? req.body.alt.ar : "",
+    };
+    newVideo.button = {
+      hyperlink: req.body.hyperlink || "", // Provide a default or leave blank
+      text: {
+        en: req.body.text ? req.body.text.en : "",
+        ar: req.body.text ? req.body.text.ar : "",
+      },
+    };
+    newVideo.layerText = {
+      title: {
+        en: req.body.title ? req.body.title.en : "",
+        ar: req.body.title ? req.body.title.ar : "",
+      },
+      description: {
+        en: req.body.description ? req.body.description.en : "",
+        ar: req.body.description ? req.body.description.ar : "",
+      },
+    };
+  }
 
+  // Find or create the home document
+  let home = await homeModel.findOne({});
   if (!home) {
-    // Create a new home document
     home = new homeModel({});
     await home.save();
   }
 
+  // Add the new video to the home document
   const updatedHome = await homeModel.findOneAndUpdate(
     {},
     { $push: { videos: newVideo } },

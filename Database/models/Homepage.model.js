@@ -107,7 +107,7 @@ homeSchema.post("init", function () {
   if (this.images && this.images.length > 0) {
     this.images.forEach((image) => {
       if (image.image && !image.image.startsWith(baseURL)) {
-        image.image = baseURL + "backend/home/" + image.image;
+        image.image = baseURL + "home/" + image.image;
       }
     });
   }
@@ -115,7 +115,7 @@ homeSchema.post("init", function () {
   if (this.videos && this.videos.length > 0) {
     this.videos.forEach((video) => {
       if (video.video && !video.video.startsWith(baseURL)) {
-        video.video = baseURL + "backend/home/" + video.video;
+        video.video = baseURL + "home/" + video.video;
       }
     });
   }
