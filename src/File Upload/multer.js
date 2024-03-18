@@ -15,11 +15,12 @@ function multerRefactor(folderName) {
   function fileFilter(req, file, cb) {
     if (
       file.mimetype.startsWith("image/") ||
-      file.mimetype.startsWith("video/")
+      file.mimetype.startsWith("video/") ||
+      file.mimetype === "application/pdf" // Allow PDF files
     ) {
       cb(null, true);
     } else {
-      cb(new AppError("Only images and videos are allowed"));
+      cb(new AppError("Only images, videos, and PDFs are allowed"));
     }
   }
 

@@ -10,6 +10,7 @@ import galleryRouter from "./modules/gallery/Gallery.Router.js";
 import homeRouter from "./modules/home/Home.Router.js";
 import mallRouter from "./modules/mall/Mall.Router.js";
 import newsletterRouter from "./modules/newsletter/newsletter.Router.js";
+import portfolioRouter from "./modules/portfolio/Portfolio.Router.js";
 import reviewRouter from "./modules/review/reviewRouter.js";
 import serviceRouter from "./modules/services/Service.Router.js";
 import timelineRouter from "./modules/timeline/Timeline.Router.js";
@@ -32,6 +33,7 @@ export function bootstrap(app) {
   app.use("/newsletter", newsletterRouter);
   app.use("/timeline", timelineRouter);
   app.use("/home", homeRouter);
+  app.use("/portfolio", portfolioRouter);
 
   app.all("*", (req, res, next) => {
     next(new AppError("Endpoint not found", 404));
