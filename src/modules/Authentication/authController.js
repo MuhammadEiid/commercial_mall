@@ -91,7 +91,7 @@ const login = catchError(async (req, res, next) => {
 
   const match = bcrypt.compareSync(password, user.password);
   if (!match) {
-    return next(new AppError("Incorrect password"), 401);
+    return next(new AppError("Incorrect password", 401));
   }
 
   let token = jwt.sign(
